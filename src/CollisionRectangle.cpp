@@ -22,20 +22,16 @@ CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f)
     computeAxis();
 }
 
-
-CollisionRectangle::CollisionRectangle(float x, float y, float w, float h): m_origin(0.f, 0.f)
+CollisionRectangle::CollisionRectangle(const glm::vec2 &p, const glm::vec2 &size): m_origin(0.f, 0.f)
 {
-    m_vx[0].x = x;
-    m_vx[0].y = y;
+    for (int i = 0; i < 4; i++)
+        m_vx[i] = p;
 
-    m_vx[1].x = x+w;
-    m_vx[1].y = y;
+    m_vx[1].x += size.x;
 
-    m_vx[2].x = x+w;
-    m_vx[2].y = y+h;
+    m_vx[2] += size;
 
-    m_vx[3].x = x;
-    m_vx[3].y = y+h;
+    m_vx[3].y += size.y;
 
     computeAxis();
 }
@@ -78,18 +74,19 @@ bool CollisionRectangle::checkCollision(const CollisionRectangle& other, bool ch
     return check_other?other.checkCollision(*this, false):true;
 }
 
-void CollisionRectangle::move(float x, float y)
+void CollisionRectangle::move(const glm::vec2 &v)
 {
     // TODO
-    glm::vec2 v(x, y);
     for (int i = 0; i <4; i++)
         m_vx[i] += v;
+
+    m_projection[0] = projectOnAxis(m_axis[0]);
+    m_projection[1] = projectOnAxis(m_axis[1]);
 }
 
-void CollisionRectangle::setPosition(float x, float y)
+void CollisionRectangle::setPosition(const glm::vec2 &v)
 {
-    glm::vec2 v(x, y),
-              tmp(m_origin+m_vx[0]);
+    glm::vec2 tmp(m_origin+m_vx[0]);
     for (int i = 0; i <4; i++)
         m_vx[i] = m_vx[i]-tmp+v;
 
@@ -101,7 +98,7 @@ void CollisionRectangle::rotate(float r)
 {
     glm::vec2 old = m_vx[0];
     for (int i = 0; i < 4; i++)
-        m_vx[i] = glm::rotate(m_vx[i]-(m_origin+old), d) + m_origin+old;
+        m_vx[i] = glm::rotate(m_vx[i]-(m_origin+old), r) + m_origin+old;
     m_origin += old - m_vx[0];
 
     computeAxis();

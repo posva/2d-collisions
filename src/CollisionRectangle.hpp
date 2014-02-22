@@ -4,7 +4,7 @@
  *  CollisionRectangle                                                         *
  *  Fri Feb 21 CET 2014                                                        *
  *  Copyright Eduardo San Martin Morote                                        *
- *  eduardo.san-martin-morote@ensimag.fr                                       *
+ *  i@posva.net                                                                *
  *  http://posva.net                                                           *
  ******************************************************************************/
 
@@ -32,7 +32,7 @@ class CollisionRectangle {
 
     public:
         CollisionRectangle();
-        CollisionRectangle(float x, float y, float w, float h);
+        CollisionRectangle(const glm::vec2 &p, const glm::vec2 &size);
 
         inline glm::vec2 getVertex(int i) const { return m_vx[i]; }
         inline glm::vec2 getOrigin() const { return m_origin; }
@@ -43,8 +43,8 @@ class CollisionRectangle {
 
         bool checkCollision(const CollisionRectangle& other, bool check_other = true) const;
 
-        void move(float x, float y);
-        void setPosition(float x, float y);
+        void move(const glm::vec2 &v);
+        void setPosition(const glm::vec2 &p);
 
         void rotate(float r);
 };

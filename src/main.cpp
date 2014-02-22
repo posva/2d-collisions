@@ -12,8 +12,8 @@ int main()
     // Create the main window
     sf::RenderWindow App(sf::VideoMode(800, 600, 32), "Hello World - SFML");
 
-    CollisionRectangle r1(5,5, 100, 40),
-                       r2(200, 100, 50, 120);
+    CollisionRectangle r1(glm::vec2(5,5), glm::vec2(100, 40)),
+                       r2(glm::vec2(200, 100), glm::vec2(50, 120));
 
     r1.setOrigin(glm::vec2(50, 20));
     r2.setOrigin(glm::vec2(10, 30));
@@ -51,9 +51,9 @@ int main()
         }
 
         if (choose)
-            r1.setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
+            r1.setPosition(glm::vec2(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y));
         else
-            r2.setPosition(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y);
+            r2.setPosition(glm::vec2(sf::Mouse::getPosition(App).x, sf::Mouse::getPosition(App).y));
 
         // Clear screen, and fill it with blue
         App.clear(sf::Color::Black);
