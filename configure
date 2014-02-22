@@ -1,0 +1,30 @@
+#! /bin/bash
+
+# I usually have this kind of script in my project folder so that I don't have to manually write the configure options everytime I add new dependencies to the project
+# This is a basic one for a C project
+# You can find a better one for a C++ project here:
+# https://github.com/posva/InputManager
+# This script works on Windows. Installing cygwin is the easiest way to get this working
+
+CONF=~/configure-script/configure.sh
+if [[ ! -x ${CONF} ]]; then
+  if [[ ! -x configure.sh ]]; then
+    wget -q -O configure.sh https://raw.github.com/posva/configure-script/master/configure.sh
+    chmod +x configure.sh
+  fi
+  CONF=./configure.sh
+fi
+
+#Common options between different OS
+OPT="-Wall -Wextra -O2"
+EXT=cpp
+MAK="Makefile"
+EXEC=2d-collsion
+
+if [ `uname` = "Darwin" ]; then
+  ${CONF} -aD -s src -o obj -b bin -c "xcrun clang++" -O "$OPT -std=c++11 -stdlib=libc++" -Isrc -L/usr/local/lib -e $EXT -E 2d-collision -M $MAK -l "-framework sfml-system -framework sfml-window -framework sfml-graphics -framework sfml-audio -framework sfml-network -framework OpenGL" -N "-std=c++11 -stdlib=libc++" $@
+elif [ `uname` = "Linux" ]; then
+  ${CONF} -aD -s src -o obj -b bin -c "clang++" -O "$OPT -std=c++11" -N "-std=c++11" -Isrc -L/usr/local/lib -e $EXT -E 2d-collision -M $MAK -l "-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -lGL" $@
+else
+  ${CONF} -aD -s src -o obj -b bin -c "mingw32-g++" -O "$OPT -std=c++11" -N "-std=c++11" -Isrc -L/usr/local/lib -e $EXT -E 2d-collision -M $MAK -l "-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -lopengl32" $@
+fi

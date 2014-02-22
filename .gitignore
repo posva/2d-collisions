@@ -1,0 +1,4 @@
+obj/
+bin/
+Makefile
+configure.sh
