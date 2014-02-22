@@ -46,7 +46,7 @@ class CollisionRectangle {
         void move(float x, float y);
         void setPosition(float x, float y);
 
-        void rotate(float d);
+        void rotate(float r);
 };
 
 #endif

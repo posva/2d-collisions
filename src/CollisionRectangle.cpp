@@ -1,4 +1,5 @@
 #include "CollisionRectangle.hpp"
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <cmath>
@@ -96,7 +97,7 @@ void CollisionRectangle::setPosition(float x, float y)
     m_projection[1] = projectOnAxis(m_axis[1]);
 }
 
-void CollisionRectangle::rotate(float d)
+void CollisionRectangle::rotate(float r)
 {
     glm::vec2 old = m_vx[0];
     for (int i = 0; i < 4; i++)

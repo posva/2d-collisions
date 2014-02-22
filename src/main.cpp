@@ -1,6 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include "CollisionRectangle.hpp"
 #include <iostream>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+#define DEG2RAD(X) (2.f*M_PI*(X)/360.f)
 
 
 int main()
@@ -38,11 +42,11 @@ int main()
                 std::cout<<"\n";
             }
 
-            if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Left) {
+            if (Event.type == sf::Event::MouseWheelMoved) {
                 if (choose)
-                    r1.rotate(10.f);
+                    r1.rotate(DEG2RAD(Event.mouseWheel.delta)*5.f);
                 else
-                    r2.rotate(10.f);
+                    r2.rotate(DEG2RAD(Event.mouseWheel.delta));
             }
         }
 
