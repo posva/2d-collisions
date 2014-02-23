@@ -24,6 +24,7 @@ class CollisionRectangle {
     glm::vec2 m_projection[2]; ///<myself projection on each axis
     glm::vec2 m_origin; /// Rectangle Center, used for rotations
     float m_rotation;
+    bool m_axisUpdate, m_projectUpdate;
 
     /**
      * Compute the axis of the rectangle.
@@ -74,7 +75,7 @@ class CollisionRectangle {
          * @param check_other this is mostly used internally for the second call: other.checkCollision(*this, false)
          * @return true if there is a collisison false otherwise
          */
-        bool checkCollision(const CollisionRectangle& other, bool check_other = true) const;
+        bool checkCollision(CollisionRectangle& other, bool check_other = true);
 
         /**
          * Move the rectangle

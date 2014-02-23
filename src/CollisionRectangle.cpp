@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f), m_rotation(0.f)
+CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f), m_rotation(0.f), m_axisUpdate(true), m_projectUpdate(true)
 {
     m_vx[0].x = 0.f;
     m_vx[0].y = 0.f;
@@ -22,7 +22,7 @@ CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f), m_rotation(0.f)
     computeAxis();
 }
 
-CollisionRectangle::CollisionRectangle(const glm::vec2 &p, const glm::vec2 &size): m_origin(0.f, 0.f)
+CollisionRectangle::CollisionRectangle(const glm::vec2 &p, const glm::vec2 &size): m_origin(0.f, 0.f), m_rotation(0.f), m_axisUpdate(true), m_projectUpdate(true)
 {
     for (int i = 0; i < 4; i++)
         m_vx[i] = p;
@@ -41,8 +41,8 @@ void CollisionRectangle::computeAxis()
     m_axis[0] = glm::normalize(m_vx[1] - m_vx[0]);
     m_axis[1] = glm::normalize(m_vx[1] - m_vx[2]);
 
-    m_projection[0] = projectOnAxis(m_axis[0]);
-    m_projection[1] = projectOnAxis(m_axis[1]);
+    m_axisUpdate = false;
+    m_projectUpdate = true;
 }
 
 glm::vec2 CollisionRectangle::projectOnAxis(const glm::vec2& axis) const
@@ -59,9 +59,19 @@ glm::vec2 CollisionRectangle::projectOnAxis(const glm::vec2& axis) const
     return mm;
 }
 
-bool CollisionRectangle::checkCollision(const CollisionRectangle& other, bool check_other) const
+bool CollisionRectangle::checkCollision(CollisionRectangle& other, bool check_other) 
 {
     glm::vec2 v;
+
+    if (m_axisUpdate) {
+        computeAxis();
+    }
+
+    if (m_projectUpdate) {
+        m_projection[0] = projectOnAxis(m_axis[0]);
+        m_projection[1] = projectOnAxis(m_axis[1]);
+        m_projectUpdate = false;
+    }
 
     v = other.projectOnAxis(m_axis[0]);
     if (v.x > m_projection[0].y || v.y < m_projection[0].x)
@@ -80,8 +90,7 @@ void CollisionRectangle::move(const glm::vec2 &v)
     for (int i = 0; i <4; i++)
         m_vx[i] += v;
 
-    m_projection[0] = projectOnAxis(m_axis[0]);
-    m_projection[1] = projectOnAxis(m_axis[1]);
+    m_projectUpdate = true;
 }
 
 void CollisionRectangle::setPosition(const glm::vec2 &v)
@@ -90,8 +99,7 @@ void CollisionRectangle::setPosition(const glm::vec2 &v)
     for (int i = 0; i <4; i++)
         m_vx[i] = m_vx[i]-tmp+v;
 
-    m_projection[0] = projectOnAxis(m_axis[0]);
-    m_projection[1] = projectOnAxis(m_axis[1]);
+    m_projectUpdate = true;
 }
 
 void CollisionRectangle::rotate(float r)
@@ -103,7 +111,7 @@ void CollisionRectangle::rotate(float r)
 
     m_rotation += r;
 
-    computeAxis();
+    m_axisUpdate = true;
 }
 
 void CollisionRectangle::setRotation(float r)
