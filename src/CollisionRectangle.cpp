@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f)
+CollisionRectangle::CollisionRectangle() : m_origin(0.f, 0.f), m_rotation(0.f)
 {
     m_vx[0].x = 0.f;
     m_vx[0].y = 0.f;
@@ -101,5 +101,12 @@ void CollisionRectangle::rotate(float r)
         m_vx[i] = glm::rotate(m_vx[i]-(m_origin+old), r) + m_origin+old;
     m_origin += old - m_vx[0];
 
+    m_rotation += r;
+
     computeAxis();
+}
+
+void CollisionRectangle::setRotation(float r)
+{
+    rotate(r-m_rotation);
 }

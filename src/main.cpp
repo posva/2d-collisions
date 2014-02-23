@@ -18,6 +18,8 @@ int main()
     r1.setOrigin(glm::vec2(50, 20));
     r2.setOrigin(glm::vec2(10, 30));
 
+    r1.setRotation(DEG2RAD(138.f));
+
     bool choose = false;
     bool r1Col(false), r2Col(false);
 
