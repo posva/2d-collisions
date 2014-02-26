@@ -92,6 +92,13 @@ class CollisionRectangle {
         void setPosition(const glm::vec2 &p);
 
         /**
+         * Get the position of the rectangle, relative to the origin
+         *
+         * @return current position
+         */
+        inline glm::vec2 getPosition() const { return m_vx[0]+m_origin; }
+
+        /**
          * Rotate the rectangle around its origin
          *
          * @param r relative rotation in radians
