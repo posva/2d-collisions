@@ -72,7 +72,7 @@ int main()
         r1Col = r1.checkCollision(r2);
         r2Col = r2.checkCollision(r1);
 
-        if (r1Col)
+        if (r1Col || r1.isPointInside(glm::vec2(0.f, 0.f)))
             rd1.setOutlineColor(sf::Color::Green);
         if (r2Col)
             rd2.setOutlineColor(sf::Color::Green);

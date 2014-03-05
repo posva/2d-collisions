@@ -78,6 +78,13 @@ class CollisionRectangle {
         bool checkCollision(CollisionRectangle& other, bool check_other = true);
 
         /**
+         * Check if a point is inside the rectangle
+         * @param p vec2 of the point
+         * @return true if the point defiend by p is inside the rectangle
+         */
+        bool isPointInside(const glm::vec2& p);
+
+        /**
          * Move the rectangle
          *
          * @param v vec2 representing the translation

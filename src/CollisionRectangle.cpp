@@ -118,3 +118,19 @@ void CollisionRectangle::setRotation(float r)
 {
     rotate(r-m_rotation);
 }
+
+bool CollisionRectangle::isPointInside(const glm::vec2 &p)
+{
+    float pro1, pro2;
+    // project the point into both axis of the rectangle
+    pro1 = glm::dot(m_axis[0], p);
+    pro2 = glm::dot(m_axis[1], p);
+
+    // check if projection overlaps
+    if (pro1 > m_projection[0].y || pro1 < m_projection[0].x
+      || pro2 > m_projection[1].y || pro2 < m_projection[1].x)
+        return false;
+
+    return true;
+}
+
